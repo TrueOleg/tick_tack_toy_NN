@@ -39,14 +39,19 @@ def gamesToWinLossData(games):
 
 
 def bestMove(board, model, player, rnd=0):
+    print('BOARD', board)
     scores = []
     moves = getMoves(board)
 
     # Make predictions for each possible move
     for i in range(len(moves)):
+        print("moves", moves)
         future = np.array(board)
+        print("future", future)
         future[moves[i][0]][moves[i][1]] = player
+        print("future with player", future)
         prediction = model.predict(future.reshape((-1, 9)))[0]
+        print("prediction", prediction)
         if player == 1:
             winPrediction = prediction[1]
             lossPrediction = prediction[2]
@@ -60,7 +65,12 @@ def bestMove(board, model, player, rnd=0):
             scores.append(drawPrediction - lossPrediction)
 
     # Choose the best move with a random factor
+    print("SCORES", scores)
     bestMoves = np.flip(np.argsort(scores))
+    print("bestMoves", bestMoves)
+    scores.sort(reverse=True)
+    print("SCORES SORT", scores)
+
     for i in range(len(bestMoves)):
         if random.random() * rnd < 0.5:
             return moves[bestMoves[i]]

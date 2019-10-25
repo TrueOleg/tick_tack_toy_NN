@@ -14,7 +14,7 @@ from tick_tack_player_nn_model import getModel, gamesToWinLossData, simulateGame
 # model.save('my_model.h5')
 
 model = keras.models.load_model('my_model.h5')
-
+games = []
 # model.summary()
 
 # games2 = [simulateGame(x=_, p1=model) for _ in range(10)]
@@ -34,9 +34,25 @@ CORS(app)
 def nn_move():
     data = request.get_json(force=True)
     print(data)
-    move = bestMove(data, model, 2, 0)
+    move = bestMove(data, model, 1, 0)
     print("MOVE", move)
     return jsonify(move)
+
+
+@app.route('/history', methods=['POST'])
+def history():
+    data = request.get_json(force=True)
+    print("=================", data)
+    result = list(map(lambda x: tuple([x[0], tuple(x[1])]), data))
+    print("=================", result)
+    games.append(result)
+    print("+++++games", games)
+    X_train, X_test, y_train, y_test = gamesToWinLossData(games)
+    some = model.fit(X_train, y_train, validation_data=(
+        X_test, y_test), epochs=100, batch_size=100)
+
+    model.save('my_model_next.h5')
+    return 'OK'
 
 
 if __name__ == "__main__":

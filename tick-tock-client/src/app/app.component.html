@@ -38,6 +38,8 @@
       </div>
     </div>
   </div>
+  <div *ngIf="winner != 0" class="winner-overlay">Winner {{ winnerTitle }}</div>
 </div>
-<button (click)="getWinner()">TEST</button>
+<button (click)="start()">START</button>
+
 <router-outlet></router-outlet>
