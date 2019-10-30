@@ -121,10 +121,6 @@ def printBoard(board):
             print("-----")
 
 
-# history = simulateGame()
-# print(history)
-
-
 def movesToBoard(moves):
     board = initBoard()
     for move in moves:
@@ -132,13 +128,6 @@ def movesToBoard(moves):
         coords = move[1]
         board[coords[0]][coords[1]] = player
     return board
-
-
-# board = movesToBoard(history)
-# printBoard(board)
-# print(getWinner(board))
-
-# games = [simulateGame() for _ in range(10000)]
 
 
 def gameStats(games, player=1):
@@ -162,8 +151,3 @@ def gameStats(games, player=1):
     print("Wins: %d (%.1f%%)" % (stats["win"], winPct))
     print("Loss: %d (%.1f%%)" % (stats["loss"], lossPct))
     print("Draw: %d (%.1f%%)" % (stats["draw"], drawPct))
-
-
-# gameStats(games)
-# print()
-# gameStats(games, player=2)

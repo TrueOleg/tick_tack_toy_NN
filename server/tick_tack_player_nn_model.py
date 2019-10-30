@@ -64,14 +64,10 @@ def bestMove(board, model, player, rnd=0):
             scores.append(drawPrediction - lossPrediction)
 
     # Choose the best move with a random factor
-    print('moves', moves)
     bestMoves = np.flip(np.argsort(scores))
-    print('scores', scores)
-    print('best move', bestMoves)
 
     for i in range(len(bestMoves)):
         if random.random() * rnd < 0.5:
-            print('moves[bestMoves[i]]', moves[bestMoves[i]])
             return moves[bestMoves[i]]
 
     # Choose a move completely at random
@@ -79,13 +75,11 @@ def bestMove(board, model, player, rnd=0):
 
 
 def simulateGame(x=0, p1=None, p2=None, rnd=0):
-    print('!', x)
     history = []
     board = initBoard()
     playerToMove = 1
 
     while getWinner(board) == -1:
-        print('Winner', getWinner(board))
         # Chose a move (random or use a player model if provided)
         move = None
         if playerToMove == 1 and p1 != None:
