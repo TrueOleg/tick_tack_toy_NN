@@ -86,18 +86,16 @@ def getWinner(board):
 
     candidate = 0
     for i in range(len(board)):
-        if board[2 - i][2 - i] == 0:
+        if board[i][2 - i] == 0:
             break
         if candidate == 0:
-            candidate = board[2 - i][2 - i]
-        if candidate != board[2 - i][2 - i]:
+            candidate = board[i][2 - i]
+        if candidate != board[i][2 - i]:
             break
         elif i == len(board) - 1:
             won = candidate
-
     if won > 0:
         return won
-
     # Still no winner?
     if (len(getMoves(board)) == 0):
         # It's a draw

@@ -22,6 +22,12 @@ export class AppComponent {
 
   constructor(private http: HttpClient) {}
 
+  logGame(player, row, cell) {
+    const step = [player, [row, cell]];
+    this.game.push(step);
+    console.log('GAME', this.game);
+  }
+
   start() {
     this.http
       .post('http://localhost:5000/nn_move', this.board, httpOptions)
@@ -36,30 +42,43 @@ export class AppComponent {
   }
 
   move(event) {
-    const row = event.target.parentElement.id;
-    const cell = event.target.id;
-    console.log('ROW Cell', row, cell);
-    this.board[row][cell] = 2;
-    console.log('GAME', this.game);
+    const row = +event.target.parentElement.id;
+    const cell = +event.target.id;
+    this.board[row][cell] = 1;
+    console.log('row', row);
+    console.log('cell', cell);
+    console.log('board', this.board);
+    this.logGame(1, row, cell);
     if (this.getWinner() === 0 && this.board.length !== 9) {
       this.http
         .post('http://localhost:5000/nn_move', this.board, httpOptions)
         .toPromise()
         .then((res: any) => {
-          this.board[res[0]][res[1]] = 1;
-          console.log('GAME', this.game);
-          if (this.getWinner() === 1) {
+          this.board[res[0]][res[1]] = 2;
+          console.log('row', res[0]);
+          console.log('cell', res[1]);
+          console.log('board', this.board);
+          this.logGame(2, res[0], res[1]);
+          if (this.getWinner() === 2) {
             this.winner = this.getWinner();
             this.winnerTitle = 'Comp';
+            this.http
+              .post('http://localhost:5000/history', this.game, httpOptions)
+              .subscribe(res => console.log('res', res));
           } else if (this.getWinner() === 3) {
-            console.log('ффффффффф');
             this.winner = this.getWinner();
             this.winnerTitle = 'NONE';
+            this.http
+              .post('http://localhost:5000/history', this.game, httpOptions)
+              .subscribe(res => console.log('res', res));
           }
         });
     } else {
       this.winner = this.getWinner();
-      this.winnerTitle = 'Human';
+      this.winnerTitle = this.winner === 1 ? 'Human' : 'None';
+      this.http
+        .post('http://localhost:5000/history', this.game, httpOptions)
+        .subscribe(res => console.log('res', res));
     }
   }
 
@@ -92,10 +111,8 @@ export class AppComponent {
         } else if (j === this.board[i].length - 1) {
           won = candidate;
         }
-        console.log('WON', won);
       }
     }
-    console.log('Won', won);
     if (won > 0) {
       return won;
     }
@@ -128,7 +145,6 @@ export class AppComponent {
       if (this.board[i][i] === 0) {
         break;
       }
-      console.log('X', candidate);
       if (candidate === 0) {
         candidate = this.board[i][i];
       }
@@ -139,7 +155,6 @@ export class AppComponent {
       }
     }
 
-    console.log('wonD!', won);
     if (won > 0) {
       return won;
     }
@@ -157,7 +172,6 @@ export class AppComponent {
         won = candidate;
       }
 
-      console.log('wonD2', won);
       if (won > 0) {
         return won;
       }
@@ -165,7 +179,6 @@ export class AppComponent {
     const haveNull = this.board.some(el => {
       return el.includes(0);
     });
-    console.log('draw', haveNull);
     if (!haveNull) {
       won = 3;
     }
