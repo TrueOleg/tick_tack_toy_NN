@@ -1,0 +1,49 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>Welcome to {{ title }}!</h1>
+</div>
+<div class="body">
+  <div class="game">
+    <div class="row" id="0">
+      <div (click)="move($event)" class="cell" id="0">
+        <span *ngIf="isShowSymvol(0, 'X')">X</span><span *ngIf="isShowSymvol(0, 'O')">O</span>
+      </div>
+      <div (click)="move($event)" class="cell" id="1">
+        <span *ngIf="isShowSymvol(1, 'X')">X</span><span *ngIf="isShowSymvol(1, 'O')">O</span>
+      </div>
+      <div (click)="move($event)" class="cell" id="2">
+        <span *ngIf="isShowSymvol(2, 'X')">X</span><span *ngIf="isShowSymvol(2, 'O')">O</span>
+      </div>
+    </div>
+    <div class="row" id="1">
+      <div (click)="move($event)" class="cell" id="3">
+        <span *ngIf="isShowSymvol(3, 'X')">X</span><span *ngIf="isShowSymvol(3, 'O')">O</span>
+      </div>
+      <div (click)="move($event)" class="cell" id="4">
+        <span *ngIf="isShowSymvol(4, 'X')">X</span><span *ngIf="isShowSymvol(4, 'O')">O</span>
+      </div>
+      <div (click)="move($event)" class="cell" id="5">
+        <span *ngIf="isShowSymvol(5, 'X')">X</span><span *ngIf="isShowSymvol(5, 'O')">O</span>
+      </div>
+    </div>
+    <div class="row" id="2">
+      <div (click)="move($event)" class="cell" id="6">
+        <span *ngIf="isShowSymvol(6, 'X')">X</span><span *ngIf="isShowSymvol(6, 'O')">O</span>
+      </div>
+      <div (click)="move($event)" class="cell" id="7">
+        <span *ngIf="isShowSymvol(7, 'X')">X</span><span *ngIf="isShowSymvol(7, 'O')">O</span>
+      </div>
+      <div (click)="move($event)" class="cell" id="8">
+        <span *ngIf="isShowSymvol(8, 'X')">X</span><span *ngIf="isShowSymvol(8, 'O')">O</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="status == 'AI' || status == 'Human' || status == 'Draw'" class="winner-overlay">Winner {{ status }}<button
+      (click)="playAgain()">Play again!</button></div>
+  <div *ngIf="status == 'Start'" class="winner-overlay">
+    <button (click)="pick('human')">I play first</button>
+    <button (click)="pick('ai')">AI play first</button>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
